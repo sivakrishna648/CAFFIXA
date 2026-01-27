@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --color-coffee-50: #fdf8f6;
+  --color-coffee-100: #f2e8e5;
+  --color-coffee-200: #eaddd7;
+  --color-coffee-300: #e0c1b3;
+  --color-coffee-400: #d3a28e;
+  --color-coffee-500: #c68369;
+  --color-coffee-600: #b96444;
+  --color-coffee-700: #a2583b;
+  --color-coffee-800: #8b4b32;
+  --color-coffee-900: #743f29;
+  --color-coffee-950: #4a281a;
+
+  --color-cream: #F5F5DC;
+  --color-dark: #1A1A1A;
+
+  --font-playfair: "Playfair Display", serif;
+  --font-inter: Inter, sans-serif;
+}
+
+:root {
+  --color-coffee-dark: #1a0f0a;
+  --color-coffee-rich: #4a2c1d;
+  --color-gold: #c6a664;
+}
+
+body {
+  @apply bg-[#0c0c0c] text-cream font-inter antialiased;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-premium {
+  @apply font-playfair;
+}
+
+.glass {
+  @apply bg-black/40 backdrop-blur-md border border-white/10;
+}
+
+.btn-primary {
+  @apply px-8 py-3 bg-coffee-600 text-white rounded-full font-semibold hover:bg-coffee-700 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-coffee-900/20;
+}
+
+.btn-secondary {
+  @apply px-8 py-3 border-2 border-coffee-600 text-coffee-600 rounded-full font-semibold hover:bg-coffee-600 hover:text-white transition-all duration-300 transform hover:scale-105 active:scale-95;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0c0c0c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a2c1d;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c68369;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-coffee-400 to-coffee-200;
+}
