@@ -3,9 +3,14 @@ import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { CreditCard, Wallet, Smartphone, ShieldCheck, ChevronRight, AlertCircle, CheckCircle } from 'lucide-react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
     const { cartItems, cartTotal } = useCart();
+    const { user, loading: authLoading } = useAuth();
+    const navigate = useNavigate();
+
     const [selectedMethod, setSelectedMethod] = useState('card');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -18,6 +23,23 @@ const Checkout = () => {
         city: '',
         zipCode: ''
     });
+
+    // Redirect to login if not authenticated
+    React.useEffect(() => {
+        if (!authLoading && !user) {
+            navigate('/login?redirect=checkout');
+        }
+    }, [user, authLoading, navigate]);
+
+    if (authLoading) {
+        return (
+            <div className="min-h-screen bg-black flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-coffee-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    if (!user) return null;
 
     const paymentMethods = [
         { id: 'card', name: 'Credit / Debit Card', icon: CreditCard },
@@ -70,7 +92,7 @@ const Checkout = () => {
 
         try {
             // Create checkout session
-            const response = await axios.post('http://localhost:5000/api/v1/orders/checkout', {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/orders/checkout`, {
                 items: cartItems.map(item => ({
                     productId: item.id,
                     quantity: item.quantity,

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Coffee } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -10,8 +11,21 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const { signup, fetchUser } = useAuth();
+    const location = useLocation();
     const navigate = useNavigate();
-    const { signup } = useAuth();
+
+    React.useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const token = params.get('token');
+        if (token) {
+            localStorage.setItem('token', token);
+            fetchUser().then(() => {
+                const redirect = params.get('redirect') || '/';
+                navigate(redirect);
+            });
+        }
+    }, [location, navigate, fetchUser]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,7 +34,9 @@ const Signup = () => {
 
         const result = await signup(name, email, password);
         if (result.success) {
-            navigate('/');
+            const params = new URLSearchParams(location.search);
+            const redirect = params.get('redirect') || '/';
+            navigate(redirect);
         } else {
             setError(result.message);
             setLoading(false);
@@ -28,7 +44,10 @@ const Signup = () => {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = 'http://localhost:5000/api/v1/auth/google';
+        const params = new URLSearchParams(location.search);
+        const redirect = params.get('redirect');
+        const googleAuthUrl = `${import.meta.env.VITE_API_URL}/auth/google`;
+        window.location.href = redirect ? `${googleAuthUrl}?redirect=${redirect}` : googleAuthUrl;
     };
 
     return (
@@ -112,7 +131,7 @@ const Signup = () => {
                     onClick={handleGoogleLogin}
                     className="w-full mt-6 py-4 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center gap-3 hover:bg-white/10 transition-colors"
                 >
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/smartlock/google.svg" width="20" alt="Google" />
+                    <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" width="20" alt="Google" />
                     <span className="font-semibold text-white">Google Signup</span>
                 </button>
 

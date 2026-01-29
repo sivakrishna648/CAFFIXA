@@ -3,9 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const CartDrawer = () => {
     const { isCartOpen, setIsCartOpen, cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
+    const { user } = useAuth();
 
     return (
         <AnimatePresence>
@@ -123,11 +125,11 @@ const CartDrawer = () => {
                                 </div>
 
                                 <Link
-                                    to="/checkout"
+                                    to={user ? "/checkout" : "/login?redirect=checkout"}
                                     onClick={() => setIsCartOpen(false)}
                                     className="w-full py-4 bg-coffee-600 hover:bg-coffee-700 text-white rounded-xl font-bold shadow-lg shadow-coffee-900/20 transition-all active:scale-95 group flex items-center justify-center gap-3"
                                 >
-                                    PROCEED TO CHECKOUT
+                                    {user ? "PROCEED TO CHECKOUT" : "LOGIN TO CHECKOUT"}
                                 </Link>
                             </div>
                         )}
