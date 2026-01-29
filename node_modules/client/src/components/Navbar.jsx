@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, LogOut, ChevronDown } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, LogOut, ChevronDown, Search, LayoutDashboard } from 'lucide-react';
+import PulseSearch from './PulseSearch';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -11,6 +12,7 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const location = useLocation();
 
     useEffect(() => {
@@ -50,6 +52,14 @@ const Navbar = () => {
 
                 {/* Icons */}
                 <div className="hidden md:flex items-center space-x-6 text-cream">
+                    {/* Search Trigger */}
+                    <button
+                        onClick={() => setIsSearchOpen(true)}
+                        className="hover:text-coffee-400 transition-colors"
+                    >
+                        <Search size={20} />
+                    </button>
+
                     {user ? (
                         <div className="relative">
                             <button
@@ -76,6 +86,14 @@ const Navbar = () => {
                                             <p className="text-xs text-gray-400 truncate">{user.email}</p>
                                         </div>
                                         <div className="space-y-2">
+                                            <Link
+                                                to="/dashboard"
+                                                onClick={() => setIsProfileOpen(false)}
+                                                className="w-full flex items-center space-x-3 text-sm text-gray-300 hover:text-coffee-400 transition-colors py-2"
+                                            >
+                                                <LayoutDashboard size={16} />
+                                                <span>Barista Lounge</span>
+                                            </Link>
                                             <button
                                                 onClick={() => {
                                                     logout();
@@ -108,6 +126,8 @@ const Navbar = () => {
                         )}
                     </button>
                 </div>
+
+                <PulseSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
                 {/* Mobile Toggle */}
                 <button className="md:hidden text-cream" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>

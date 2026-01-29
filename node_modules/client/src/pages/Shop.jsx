@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import ProductCard from '../components/ProductCard';
+import CuppingReviews from '../components/CuppingReviews';
 
 const products = [
     {
@@ -136,6 +137,8 @@ const Shop = () => {
                     ))}
                 </div>
             </div>
+
+            <CuppingReviews />
         </div>
     );
 };

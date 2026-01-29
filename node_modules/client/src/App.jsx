@@ -10,7 +10,9 @@ import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Checkout from './pages/Checkout';
+import Dashboard from './pages/Dashboard';
 import CartDrawer from './components/CartDrawer';
+import CustomCursor from './components/CustomCursor';
 
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
@@ -21,6 +23,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <div className="min-h-screen">
+          <CustomCursor />
           <ScrollToTop />
           <Navbar />
           <CartDrawer />
@@ -35,6 +38,7 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
         </div>
